@@ -92,3 +92,9 @@ async def read_by_query(category: str):
         if book.get("category").casefold()==category.casefold():
             filtered_book.append(book)
     return filtered_book 
+
+# note GET donot have any body
+# async=Start cooking
+# while waiting,
+# handle another order
+# GET Request:Usually uses data already stored on the server and sends/displays it to the user/client.

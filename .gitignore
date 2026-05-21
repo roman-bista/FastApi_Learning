@@ -3,3 +3,5 @@ __pycache__/
 fastapienv/
 .env
 .DS_Store
+*.db
+__pycache__/

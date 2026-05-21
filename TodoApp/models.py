@@ -1,4 +1,4 @@
-#table definitions
+#table definitions,Define database tables using Python classes
 
 from database import Base
 from sqlalchemy import Column, Integer, String, Boolean

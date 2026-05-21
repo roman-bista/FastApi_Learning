@@ -5,13 +5,19 @@ models.py
 → defines tables
 
 main.py
-→ starts app and creates tables
+→ starts FastAPI app and defines routes
 
-Concept         	            Purpose
+Concept Purpose
 
-engine------------>	            connect to DB
-Base-------------->	            parent for tables
-models------------>             define tables
-create_all()------>	            create tables
-SessionLocal------>	            DB operations
-Column------------>	            define fields
+engine------------> manages DB connectivity
+Base--------------> parent class for ORM models
+models------------> define tables
+create_all()------> create tables
+Session ---------> active DB conversation
+SessionLocal------> creates DB sessions
+Column------------> define fields
+
+database.py → DB infrastructure
+models.py → table structure
+main.py → API logic/routes
+todos.db → actual stored data

@@ -1,18 +1,56 @@
-# Contains:
+# Contains:Database setup and connection configuration Setting up everything needed for FastAPI to talk to database,It:
+# creates DB connection manager
+# creates session factory
+# creates base model class
 
-# database connection
-# engine
-# Base class
+# Database URL
+#       ↓
+# Engine created
+#       ↓
+# Session factory created
+#       ↓
+# Base model class created
 
 
-from sqlalchemy import create_engine    #Used to create connection with database.
-from sqlalchemy.orm import sessionmaker     #temporary conversation with database
-from sqlalchemy.ext.declarative import declarative_base     #reates base class for SQLAlchemy models.
 
-SQLALCHEMY_DATABASE_URL='sqlite:///./todos.db'  #using SQLite database.
+from sqlalchemy import create_engine                            #Used to create connection with database.
+from sqlalchemy.orm import sessionmaker                         #temporary conversation with database
+from sqlalchemy.ext.declarative import declarative_base         #creates base class for SQLAlchemy models.
 
-engine= create_engine(SQLALCHEMY_DATABASE_URL, connect_args={'check_same_thread': False})  #Engine = actual database connection manager.
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False,bind=engine)  #This creates sessions for database operations.
+SQLALCHEMY_DATABASE_URL='sqlite:///./todos.db'                   #Tell SQLAlchemy which database to use
 
-Base=declarative_base()     #This is parent class for database models.
+
+engine= create_engine(SQLALCHEMY_DATABASE_URL, connect_args={'check_same_thread': False}) 
+#Engine = actual database connection manager.How to connect to database,Create database connection manager
+#Engine = highway to database
+
+
+
+SessionLocal = sessionmaker(autocommit=False, autoflush=False,bind=engine)   
+#This creates sessions for database operations.
+
+Base=declarative_base()                                          #This is parent class for database models.
+
+
+
+
+# Engine =  knows how to communicate with DB
+# sessionmaker:  machine that create session
+# session:  Actual conversation with database
+
+# connect_args={'check_same_thread': False}=Allow FastAPI to use SQLite across multiple threads,SQLite has threading restrictions.FastAPI uses multiple requests concurrently.
+
+# bind=engine : Connect sessions to this engine
+
+
+
+
+
+# Component-------->Responsibility
+
+# URL-------------->where DB exists
+# engiNE----------->manages DB connectivity
+# sessionmakeR----->creates sessions
+# session---------->active DB conversation
+# Base------------->parent for models

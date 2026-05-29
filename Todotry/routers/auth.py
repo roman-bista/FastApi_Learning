@@ -8,7 +8,7 @@ from database import get_db
 router = APIRouter()
 
 class CreateUserRequest(BaseModel):
-    username: str=Field(gt= 3)
+    username: str
     email: EmailStr
     first_name: str
     last_name: str
@@ -20,7 +20,7 @@ bcrypt_context = CryptContext(
     deprecated='auto'
 )
 @router.post("/auth/")
-async def authorize(req: CreateUserRequest, db: Session = Depends(get_db)):
+async def create_user(req: CreateUserRequest, db: Session = Depends(get_db)):
     encrypted_pw = bcrypt_context.hash(req.password)    
     user_model = Worker(
     username=req.username,
@@ -35,3 +35,22 @@ async def authorize(req: CreateUserRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user_model)
     return user_model
+
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+@router.post("/auth/token")
+async def login(req: LoginRequest,db: Session = Depends(get_db)):
+
+    user= db.query(Worker).filter(LoginRequest.username == req.username).first()
+
+    if user is None:
+        raise HTTPException( status_code=401, detail="Invalid username or password" )
+    
+    password_matches = bcrypt_context.verify( req.password, user.hashed_password )
+    
+    if not password_matches: 
+        raise HTTPException( status_code=401, detail="Invalid username or password" ) 
+    return { "message": "Login successful" }
